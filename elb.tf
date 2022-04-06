@@ -21,7 +21,7 @@ resource "aws_elb" "elasticsearch_elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
-    target              = "HTTP:9200/"
+    target              = "HTTP:9200/_cluster/health/?wait_for_status=green&timeout=1s"
     timeout             = 5
   }
 }
