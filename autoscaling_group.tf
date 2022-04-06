@@ -15,7 +15,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down" {
   metric_name         = "CPUUtilization"
   threshold           = "${var.elasticsearch_scale_down_cpu_threshold}"
   evaluation_periods  = "2"
-  period              = "120"
+  period              = "${var.elasticsearch_scale_down_period}"
   statistic           = "Average"
   dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.elasticsearch.name}"
@@ -39,7 +39,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up" {
   metric_name         = "CPUUtilization"
   threshold           = "${var.elasticsearch_scale_up_cpu_threshold}"
   evaluation_periods  = "2"
-  period              = "120"
+  period              = "${var.elasticsearch_scale_up_period}"
   statistic           = "Average"
   dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.elasticsearch.name}"
