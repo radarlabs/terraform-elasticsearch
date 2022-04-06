@@ -66,7 +66,6 @@ variable "elasticsearch_scale_up_period" {
   default = 120
 }
 
-
 variable "elasticsearch_scale_down_cpu_threshold" {
   description = "CPU usage threshold to trigger a cluster scale-down."
   default = 5
