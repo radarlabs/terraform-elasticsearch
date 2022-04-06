@@ -56,6 +56,11 @@ variable "elasticsearch_max_instances" {
   default     = "2"
 }
 
+variable "elasticsearch_health_check_grace_period" {
+  description = "Number of seconds after startup before a failing health check will terminate an instance."
+  default     = 3600  # 1 hour.
+}
+
 variable "elasticsearch_scale_up_cpu_threshold" {
   description = "CPU usage threshold to trigger a cluster scale-up."
   default = 10

@@ -53,6 +53,9 @@ resource "aws_autoscaling_group" "elasticsearch" {
   default_cooldown     = 30
   force_delete         = true
 
+  health_check_type = "ELB"
+  health_check_grace_period = "${var.elasticsearch_health_check_grace_period}"
+
   launch_template      = {
     id      = "${aws_launch_template.elasticsearch.id}"
     version = "$$Latest"
@@ -60,6 +63,19 @@ resource "aws_autoscaling_group" "elasticsearch" {
 
   vpc_zone_identifier  = ["${data.aws_subnet_ids.all_subnets.ids}"]
   load_balancers       = ["${aws_elb.elasticsearch_elb.*.id}"]
+
+  warm_pool {
+    pool_state                  = "Stopped"
+    min_size                    = 1
+    # The default value of max_group_prepared_capacity is used which
+    # keeps the pool sized to match the difference between the ASG's
+    # max capacity and its desired capacity.
+    # https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-warm-pools.html#create-a-warm-pool-console
+
+    instance_reuse_policy {
+      reuse_on_scale_in = true
+    }
+  }
 
   tag {
     key                 = "Name"
