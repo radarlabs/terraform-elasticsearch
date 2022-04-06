@@ -61,9 +61,20 @@ variable "elasticsearch_scale_up_cpu_threshold" {
   default = 10
 }
 
+variable "elasticsearch_scale_up_period" {
+  description = "Time between measurements of the CPU threshold impacting scale up. Two consecutive measurements must break the CPU threshold to trigger a scaling event."
+  default = 120
+}
+
+
 variable "elasticsearch_scale_down_cpu_threshold" {
   description = "CPU usage threshold to trigger a cluster scale-down."
   default = 5
+}
+
+variable "elasticsearch_scale_down_period" {
+  description = "Time between measurements of the CPU threshold impacting scale down. Two consecutive measurements must break the CPU threshold to trigger a scaling event."
+  default = 600
 }
 
 # higher values here tune elasticsearch for use on smaller clusters
