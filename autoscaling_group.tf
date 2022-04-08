@@ -1,5 +1,5 @@
 resource "aws_autoscaling_policy" "scale_down_single" {
-  name                   = "elasticsearch-scale_down_single"
+  name                   = "${var.service_name}-${var.environment}-elasticsearch-scale_down_single"
   scaling_adjustment     = -1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
@@ -9,7 +9,7 @@ resource "aws_autoscaling_policy" "scale_down_single" {
 resource "aws_cloudwatch_metric_alarm" "scale_down" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
   alarm_actions       = ["${aws_autoscaling_policy.scale_down_single.arn}"]
-  alarm_name          = "elasticsearch-scale_down"
+  alarm_name          = "${var.service_name}-${var.environment}-elasticsearch-scale_down"
   comparison_operator = "LessThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
   metric_name         = "CPUUtilization"
@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down" {
 }
 
 resource "aws_autoscaling_policy" "scale_up_single" {
-  name                   = "elasticsearch-scale_up_single"
+  name                   = "${var.service_name}-${var.environment}-elasticsearch-scale_up_single"
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
@@ -33,7 +33,7 @@ resource "aws_autoscaling_policy" "scale_up_single" {
 resource "aws_cloudwatch_metric_alarm" "scale_up" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
   alarm_actions       = ["${aws_autoscaling_policy.scale_up_single.arn}"]
-  alarm_name          = "elasticsearch-scale_up"
+  alarm_name          = "${var.service_name}-${var.environment}-elasticsearch-scale_up"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
   metric_name         = "CPUUtilization"
