@@ -53,6 +53,9 @@ resource "aws_autoscaling_group" "elasticsearch" {
   default_cooldown     = 30
   force_delete         = true
 
+  health_check_type = "ELB"
+  health_check_grace_period = "${var.elasticsearch_health_check_grace_period}"
+
   launch_template      = {
     id      = "${aws_launch_template.elasticsearch.id}"
     version = "$$Latest"
