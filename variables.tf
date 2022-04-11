@@ -61,6 +61,11 @@ variable "elasticsearch_health_check_grace_period" {
   default     = 3600  # 1 hour.
 }
 
+variable "elasticsearch_asg_termination_policy" {
+  description = "The termination policy to apply when scaling-in/down instances in the ASG."
+  default     = "NewestInstance"
+}
+
 variable "elasticsearch_scale_up_cpu_threshold" {
   description = "CPU usage threshold to trigger a cluster scale-up."
   default = 10
@@ -71,6 +76,16 @@ variable "elasticsearch_scale_up_period" {
   default = 120
 }
 
+variable "elasticsearch_scale_up_cooldown" {
+  description = "The cooldown period that must elapse between the last scaling event and a scale out/up."
+  default = 1800  # 30 minutes
+}
+
+variable "elasticsearch_scale_up_scaling_adjustment" {
+  description = "The number of instances to scale for a scale out/up event."
+  default = 2  # Add 2 instances.
+}
+
 variable "elasticsearch_scale_down_cpu_threshold" {
   description = "CPU usage threshold to trigger a cluster scale-down."
   default = 5
@@ -79,6 +94,16 @@ variable "elasticsearch_scale_down_cpu_threshold" {
 variable "elasticsearch_scale_down_period" {
   description = "Time between measurements of the CPU threshold impacting scale down. Two consecutive measurements must break the CPU threshold to trigger a scaling event."
   default = 600
+}
+
+variable "elasticsearch_scale_down_cooldown" {
+  description = "The cooldown period that must elapse between the last scaling event and a scale in/down."
+  default = 1800  # 30 minutes
+}
+
+variable "elasticsearch_scale_down_scaling_adjustment" {
+  description = "The number of instances to scale for a scale in/down event."
+  default = -1  # Remove 1 instance.
 }
 
 # higher values here tune elasticsearch for use on smaller clusters
