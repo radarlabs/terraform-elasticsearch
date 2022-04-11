@@ -1,8 +1,8 @@
 resource "aws_autoscaling_policy" "scale_down_single" {
   name                   = "${var.service_name}-${var.environment}-elasticsearch-scale_down_single"
-  scaling_adjustment     = -1
+  scaling_adjustment     = "${var.elasticsearch_scale_down_scaling_adjustment}"
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 120
+  cooldown               = "${var.elasticsearch_scale_down_cooldown}"
   autoscaling_group_name = "${aws_autoscaling_group.elasticsearch.name}"
 }
 
@@ -24,9 +24,9 @@ resource "aws_cloudwatch_metric_alarm" "scale_down" {
 
 resource "aws_autoscaling_policy" "scale_up_single" {
   name                   = "${var.service_name}-${var.environment}-elasticsearch-scale_up_single"
-  scaling_adjustment     = 1
+  scaling_adjustment     = "${var.elasticsearch_scale_up_scaling_adjustment}"
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 120
+  cooldown               = "${var.elasticsearch_scale_up_cooldown}"
   autoscaling_group_name = "${aws_autoscaling_group.elasticsearch.name}"
 }
 
@@ -55,6 +55,7 @@ resource "aws_autoscaling_group" "elasticsearch" {
 
   health_check_type = "ELB"
   health_check_grace_period = "${var.elasticsearch_health_check_grace_period}"
+  termination_policies = ["${var.elasticsearch_asg_termination_policy}"]
 
   launch_template      = {
     id      = "${aws_launch_template.elasticsearch.id}"
