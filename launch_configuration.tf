@@ -10,6 +10,11 @@ resource "aws_launch_template" "elasticsearch" {
     arn = "${aws_iam_instance_profile.elasticsearch.arn}"
   }
 
+  // Turn on detailed monitoring (1-minute) for EC2 instances.
+  monitoring {
+    enabled = true
+  }
+
   lifecycle {
     create_before_destroy = true
   }
